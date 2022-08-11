@@ -1,0 +1,29 @@
+{
+  "name": "homebrewDJ",
+  "version": "0.0.1",
+  "main": "dist/main.js",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "midi": "^2.0.0",
+    "typescript": "^4.7.4"
+  },
+  "devDependencies": {
+    "@types/jasmine": "^4.0.3",
+    "@types/midi": "^2.0.0",
+    "jasmine": "^4.3.0",
+    "jasmine-spec-reporter": "^7.0.0",
+    "jasmine-ts": "^0.4.0",
+    "nodemon": "^2.0.19",
+    "ts-node": "^10.9.1",
+    "snake-rs": "./snake-rs/pkg",
+    "typedoc": "^0.23.10"
+  },
+  "scripts": {
+    "test": "jasmine-ts --config=jasmine.json",
+    "watch": "nodemon ./examples/main.ts",
+    "dev": "nodemon src/main.ts",
+    "generate:docs": "typedoc src/",
+    "build": "wasm-pack build --target nodejs --dev ./snake-rs"
+  }
+}

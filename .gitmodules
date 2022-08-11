@@ -1,0 +1,3 @@
+[submodule "snake-rs"]
+	path = snake-rs
+	url = git@github.com:thallosaurus/snake-rs.git
