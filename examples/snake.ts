@@ -1,21 +1,19 @@
-import { Receiver } from "../src/hDJMidiRecv";
-import { Model} from "../src/hDJMidiRecvModel";
 import { SnakeMap, VecState } from 'snake-rs';
-// import { memory } from "snake-rs/snake_rs_bg.wasm";
+
+import { Color, buttonBufferIndexToButtonId, hDJRecvEvent, hDJMidiRecv } from '../src';
+import { memory } from "snake-rs/snake_rs_bg.wasm";
 
 // let { memory } = require('snake-rs/snake_rs_bg.wasm');
 
-/* bootstraps everything here */
-
-let h = new Receiver.hDJMidiRecv();
+let h = new hDJMidiRecv();
 
 console.log("available devices:");
 console.log(h.enumeratePorts());
-h.on(Model.hDJRecvEvent.MatrixEvent, (data) => {
+h.on(hDJRecvEvent.MatrixEvent, (data) => {
     console.log("[main, matrix_event]", data);
 });
 
-h.on(Model.hDJRecvEvent.ButtonPress, (data) => {
+h.on(hDJRecvEvent.ButtonPress, (data) => {
     console.log("[main, button_press]", data);
 });
 
@@ -52,11 +50,11 @@ setInterval(() => {
     // console.log(mapped);
 
     h.boundBuffer.flush();
-    h.boundBuffer.set(i, [Model.Color.RED3]);
+    h.boundBuffer.set(i, [Color.RED3]);
     i = (i + 1) % (8 * 8);
 
     j = (j + 1) % 8;
-    let note = Model.buttonBufferIndexToButtonId(j);
+    let note = buttonBufferIndexToButtonId(j);
     //console.log(button);
-    h.boundBuffer.setButton(Model.Color.GREEN3, note);
+    h.boundBuffer.setButton(Color.GREEN3, note);
 }, 100);

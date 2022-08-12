@@ -1,7 +1,10 @@
 # homebrewdj-launchpad-driver - Launchpad Mini (MK2) Driver for Node from homebrewDJ (TBA)
 
+[![Node.js Package](https://github.com/thallosaurus/homebrewdj-launchpad-driver/actions/workflows/npm-publish.yml/badge.svg)](https://github.com/thallosaurus/homebrewdj-launchpad-driver/actions/workflows/npm-publish.yml)
+
 ## About
 This Module implements a Interface between a Launchpad Mini MK2 and Javascript Events with node-midi. See the example below on how to use this module
+
 
 ## Installation
 ### From NPM
