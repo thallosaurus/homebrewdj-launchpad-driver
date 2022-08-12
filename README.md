@@ -1,4 +1,4 @@
-# launchpad.js - Launchpad Mini (MK2) Driver for Node
+# homebrewdj-launchpad-driver - Launchpad Mini (MK2) Driver for Node from homebrewDJ (TBA)
 
 ## About
 This Module implements a Interface between a Launchpad Mini MK2 and Javascript Events with node-midi. See the example below on how to use this module

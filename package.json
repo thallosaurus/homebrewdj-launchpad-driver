@@ -1,12 +1,22 @@
 {
-  "name": "launchpad.js",
+  "name": "homebrewdj-launchpad-driver",
   "version": "0.0.2",
-  "main": "dist/src/index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "license": "MIT",
-  "private": true,
   "dependencies": {
     "midi": "^2.0.0"
   },
+  "files": [
+    "dist/hDJMidiOutputBuffer.d.ts",
+    "dist/hDJMidiOutputBuffer.js",
+    "dist/hDJMidiRecv.d.ts",
+    "dist/hDJMidiRecv.js",
+    "dist/hDJRecvModel.d.ts",
+    "dist/hDJRecvModel.js",
+    "dist/index.d.ts",
+    "dist/index.js"
+  ],
   "devDependencies": {
     "typescript": "^4.7.4",
     "@types/jasmine": "^4.0.3",
@@ -20,10 +30,12 @@
     "typedoc": "^0.23.10"
   },
   "scripts": {
+    "prepare": "npm run build",
     "test": "jasmine-ts --config=jasmine.json",
-    "watch": "nodemon ./examples/main.ts",
     "dev": "nodemon src/main.ts",
     "generate:docs": "typedoc",
-    "build": "wasm-pack build --target nodejs --dev ./snake-rs"
+    "build": "tsc",
+    "build:example": "wasm-pack build --target nodejs --dev ./snake-rs",
+    "example:snake": "nodemon ./examples/main.ts"
   }
 }
