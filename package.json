@@ -51,7 +51,6 @@
     "dev": "nodemon src/main.ts",
     "generate:docs": "typedoc",
     "build": "tsc",
-    "build:example": "wasm-pack build --target nodejs --dev ./snake-rs",
-    "example:snake": "nodemon ./examples/main.ts"
+    "example:snake": "ts-node ./examples/snake.ts"
   }
 }

@@ -96,16 +96,12 @@ export enum ButtonId {
 }
 
 /**
- * Converts a ButtonId to its corresponding buttonBuffer index
+ * Returns if the pressed button is a round button
  *
  * @export
- * @param {ButtonId} n
- * @returns
+ * @param {number} note
+ * @return {*}  {boolean}
  */
-export function buttonIdToButtonBufferIndex(n: ButtonId) {
-    return Object.keys(ButtonId).indexOf(n.toString());
-}
-
 export function isButton(note: number): boolean {
     return ButtonId[note] != undefined;
 }
@@ -126,33 +122,75 @@ export function buttonBufferIndexToButtonId(index: number): ButtonId {
         case 3:
             return ButtonId.SENDB;
         case 4:
-            return ButtonId.SENDB;
-        case 5:
             return ButtonId.STOP;
-        case 6:
+        case 5:
             return ButtonId.MUTE;
-        case 7:
+        case 6:
             return ButtonId.SOLO;
-        case 8:
+        case 7:
             return ButtonId.RECORDARM;
-        case 9:
+        case 8:
             return ButtonId.ARROW_UP;
-        case 10:
+        case 9:
             return ButtonId.ARROW_DOWN;
-        case 11:
+        case 10:
             return ButtonId.ARROW_LEFT;
-        case 12:
+        case 11:
             return ButtonId.ARROW_RIGHT;
-        case 13:
+        case 12:
             return ButtonId.SESSION;
-        case 14:
+        case 13:
             return ButtonId.USER1;
-        case 15:
+        case 14:
             return ButtonId.USER2;
-        case 16:
+        case 15:
             return ButtonId.MIXER;
         default:
-            return ButtonId.ARROW_DOWN;
+            return -2;
+    };
+}
+
+/**
+ * Converts a ButtonId to its corresponding buttonBuffer index
+ *
+ * @export
+ * @param {ButtonId} n
+ * @returns
+ */
+export function buttonIdToButtonBufferIndex(id: ButtonId): number {
+    switch (id) {
+        case ButtonId.VOLUME:
+            return 0;
+        case ButtonId.PAN:
+            return 1;
+        case ButtonId.SENDA:
+            return 2;
+        case ButtonId.SENDB:
+            return 3;
+        case ButtonId.STOP:
+            return 4;
+        case ButtonId.MUTE:
+            return 5;
+        case ButtonId.SOLO:
+            return 6;
+        case ButtonId.RECORDARM:
+            return 7;
+        case ButtonId.ARROW_UP:
+            return 8;
+        case ButtonId.ARROW_DOWN:
+            return 9;
+        case ButtonId.ARROW_LEFT:
+            return 10;
+        case ButtonId.ARROW_RIGHT:
+            return 11;
+        case ButtonId.SESSION:
+            return 12;
+        case ButtonId.USER1:
+            return 13;
+        case ButtonId.USER2:
+            return 14;
+        case ButtonId.MIXER:
+            return 15;
     };
 }
 

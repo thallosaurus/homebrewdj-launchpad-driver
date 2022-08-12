@@ -75,5 +75,6 @@ setTimeout(() => {
 }, 5000);
 ```
 
+run 
 # TODO
-- Get Upper Button Row working
+ - Get Lighting to work for the upper row buttons

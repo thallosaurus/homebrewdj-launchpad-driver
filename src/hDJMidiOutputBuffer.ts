@@ -35,7 +35,7 @@ export class hDJMidiOutputBuffer extends EventEmitter {
      * @type {Uint8Array}
      * @memberof hDJMidiOutputBuffer
      */
-    private readonly buffer: Uint8Array;
+    readonly buffer: Uint8Array;
 
     /**
      * unbound Button Buffer Array, changes here don't reflect on the device. Use setButton
@@ -86,8 +86,8 @@ export class hDJMidiOutputBuffer extends EventEmitter {
      */
     setButton(data: number, button: ButtonId) {
         let mappedIndex = buttonIdToButtonBufferIndex(button);
+        //console.log(mappedIndex);
         this.buttonBuffer.set([data], mappedIndex);
-        console.log(mappedIndex, this.buttonBuffer);
         this.emit("data", this.mapAsMidiMessages());
     }
 

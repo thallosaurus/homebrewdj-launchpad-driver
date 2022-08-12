@@ -103,6 +103,8 @@ export class hDJMidiRecv extends EventEmitter {
         });
 
         this.buffer.on("data", (data: any) => {
+            let unpacked = [];
+            
             for (let msg of data) {
                 this.midiReturn.send(msg);
             }
