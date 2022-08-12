@@ -1,7 +1,7 @@
-import { SnakeMap, VecState } from 'snake-rs';
+// import { SnakeMap, VecState } from 'snake-rs';
 
 import { Color, buttonBufferIndexToButtonId, hDJRecvEvent, hDJMidiRecv } from '../src';
-import { memory } from "snake-rs/snake_rs_bg.wasm";
+// import { memory } from "snake-rs/snake_rs_bg.wasm";
 
 // let { memory } = require('snake-rs/snake_rs_bg.wasm');
 
@@ -26,7 +26,7 @@ let j = 0;
 
 // h.connect(0, 0);
 
-let snake = SnakeMap.new(8, 8);
+// let snake = SnakeMap.new(8, 8);
 
 setInterval(() => {
     //console.log(i);
@@ -35,7 +35,7 @@ setInterval(() => {
         x: x,
         y: y
     }); */
-    snake.tick();
+    // snake.tick();
 
     //WebAssembly.instantiate()
 

@@ -3,10 +3,47 @@ import * as midi from 'midi';
 import EventEmitter from "events";
 import { fromXY } from './hDJMidiRecv';
 
+/**
+ * Contains Methods for interacting with the launchpad LED Output
+ *
+ * @export
+ * @class hDJMidiOutputBuffer
+ * @extends {EventEmitter}
+ */
 export class hDJMidiOutputBuffer extends EventEmitter {
+
+    /**
+     * Count of the Width of the XY Area of the launchpad
+     *
+     * @static
+     * @memberof hDJMidiOutputBuffer
+     */
     static readonly width = 8;
+
+    /**
+     * Count of the Height of the XY Area of the launchpad
+     *
+     * @static
+     * @memberof hDJMidiOutputBuffer
+     */
     static readonly height = 8;
+
+    /**
+     * unbound Buffer Array, changes here don't reflect on the device. Use setXY or set
+     *
+     * @private
+     * @type {Uint8Array}
+     * @memberof hDJMidiOutputBuffer
+     */
     private readonly buffer: Uint8Array;
+
+    /**
+     * unbound Button Buffer Array, changes here don't reflect on the device. Use setButton
+     *
+     * @private
+     * @type {Uint8Array}
+     * @memberof hDJMidiOutputBuffer
+     */
     private readonly buttonBuffer: Uint8Array;
 
     constructor() {
@@ -17,7 +54,9 @@ export class hDJMidiOutputBuffer extends EventEmitter {
     }
 
     /**
-     * empties the buffer
+     * Empties both button and matrix buffer
+     *
+     * @memberof hDJMidiOutputBuffer
      */
     flush(): void {
         this.buffer.fill(Color.OFF);
@@ -40,6 +79,11 @@ export class hDJMidiOutputBuffer extends EventEmitter {
         this.emit("data", this.mapAsMidiMessages());
     }
 
+    /**
+     * Sets data of Button LED on buffer
+     * @param data 
+     * @param button 
+     */
     setButton(data: number, button: ButtonId) {
         let mappedIndex = buttonIdToButtonBufferIndex(button)
         this.buttonBuffer.set([data], mappedIndex);
@@ -63,6 +107,13 @@ export class hDJMidiOutputBuffer extends EventEmitter {
         return this.buffer[index];
     }
 
+    /**
+     * Set Data by Index on the buffer - emits
+     *
+     * @param {number} i
+     * @param {number[]} data
+     * @memberof hDJMidiOutputBuffer
+     */
     set(i: number, data: number[]) {
         this.buffer.set(data, i);
         this.emit("data", this.mapAsMidiMessages());
@@ -78,6 +129,13 @@ export class hDJMidiOutputBuffer extends EventEmitter {
         this.buffer.set(from, index)
     }
 
+    /**
+     * Returns current buffers concatenated as individual Midi Messages
+     *
+     * @private
+     * @returns {midi.MidiMessage[]}
+     * @memberof hDJMidiOutputBuffer
+     */
     private mapAsMidiMessages(): midi.MidiMessage[] {
         let b = new Array();
 
@@ -98,7 +156,6 @@ export class hDJMidiOutputBuffer extends EventEmitter {
 
         //add button states
         let buttonIds = Object.values(ButtonId);
-        //console.log(buttonIds);
         for (let i = 0; i < this.buttonBuffer.length; i++) {
             const note = buttonIds[i] as ButtonId;  //button selector
             const velocity = this.buttonBuffer[i];  //color

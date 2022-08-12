@@ -9,6 +9,12 @@ export interface PortEnumeration {
     name: String
 }
 
+/**
+ * Output of hDJMidiRecv.enumeratePorts()
+ *
+ * @export
+ * @interface PortEnumerationMap
+ */
 export interface PortEnumerationMap {
     input: PortEnumeration[],
     output: PortEnumeration[]

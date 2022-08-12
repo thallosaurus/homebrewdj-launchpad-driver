@@ -13,15 +13,46 @@ import {
 import { EventEmitter } from 'events';
 
 /**
- * Responsible for communication between the hardware. Decodes Messages and translates them to homebrewDJ commands
+ * Responsible for communication between the hardware. Decodes Messages and translates them to hDJMidiRecv events
  *
  * @class hDJMidiRecv
  */
 export class hDJMidiRecv extends EventEmitter {
 
+    /**
+     * MIDI-Port responsible for sending to the launchpad
+     *
+     * @private
+     * @type {midi.Input}
+     * @memberof hDJMidiRecv
+     */
     private midiSender: midi.Input = new midi.Input();
+
+    /**
+     * MIDI-Port responsible for receiving data from the launchpad
+     *
+     * @private
+     * @type {midi.Output}
+     * @memberof hDJMidiRecv
+     */
     private midiReturn: midi.Output = new midi.Output();
+
+    /**
+     * Buffer for XY-Area of the Launchpad
+     *
+     * @private
+     * @type {hDJMidiOutputBuffer}
+     * @memberof hDJMidiRecv
+     */
     private buffer: hDJMidiOutputBuffer = new hDJMidiOutputBuffer();
+
+    /**
+     * Timestamp. Delta Time gets added with each midi message
+     *
+     * @private
+     * @type {number}
+     * @memberof hDJMidiRecv
+     */
     private frameTime: number = 0;
 
     /**
@@ -95,7 +126,7 @@ export class hDJMidiRecv extends EventEmitter {
         for (let i = 0; i < this.midiReturn.getPortCount(); i++) {
             outputs.push({
                 port: i,
-                name: this.midiSender.getPortName(i)
+                name: this.midiReturn.getPortName(i)
             });
         }
 
@@ -281,6 +312,7 @@ class hDJMidiOutputBuffer extends EventEmitter {
         //add button states
 
         let buttonIds = Object.values(ButtonId);
+
         //console.log(buttonIds);
         for (let i = 0; i < this.buttonBuffer.length; i++) {
             const note = buttonIds[i] as ButtonId;  //button selector
