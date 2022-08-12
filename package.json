@@ -31,6 +31,7 @@
   },
   "scripts": {
     "prepare": "npm run build",
+    "push:version": "npm version patch",
     "test": "jasmine-ts --config=jasmine.json",
     "dev": "nodemon src/main.ts",
     "generate:docs": "typedoc",
