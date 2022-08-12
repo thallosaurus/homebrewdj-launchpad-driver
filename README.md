@@ -23,7 +23,7 @@ If you use Windows, you can also use ```npm install --global windows-build-tools
 ## Examples
 ```javascript
 import { Receiver } from "../src/hDJMidiRecv";
-import { Model } from "../src/hDJRecvModel";
+import { hDJRecvEvent, Color } from "../src/hDJRecvModel";
 
 let h = new Receiver.hDJMidiRecv();
 
@@ -38,7 +38,7 @@ h.on(Model.hDJRecvEvent.MatrixEvent, (data) => {
     console.log("Someone pressed the matrix at", data.pos);
 });
 
-h.on(Model.hDJRecvEvent.ButtonPress, (data) => {
+h.on(hDJRecvEvent.ButtonPress, (data) => {
     console.log("Someone pressed the button", data.button);
 });
 
