@@ -33,7 +33,7 @@ If you use Windows, you can also use ```npm install --global windows-build-tools
 
 ## Examples
 ```javascript
-const { hDJMidiRecv, hDJRecvEvent, Colors } = require("homebrewdj-launchpad-driver");
+const { hDJMidiRecv, hDJRecvEvent, hDJMidiOutputBuffer, getRandomColor, ButtonId } = require("homebrewdj-launchpad-driver");
 
 let h = new hDJMidiRecv();
 
@@ -48,18 +48,31 @@ h.on(hDJRecvEvent.MatrixEvent, (data) => {
     console.log("Someone pressed the matrix at", data.pos);
 });
 
-h.on(ButtonPress, (data) => {
+h.on(hDJRecvEvent.ButtonPress, (data) => {
     console.log("Someone pressed the button", data.button);
+    console.log(ButtonId[data.button]);
 });
 
-//Writing some data to the launchpad
-let data = new Uint8Array(8 * 8);
-data.fill(Colors.GREEN3);
-
-h.boundBuffer.setXY(data, {
-    x: 0,
-    y: 0
+//Fill a new Array with some random colors
+let data = new Uint8Array(hDJMidiOutputBuffer.width * hDJMidiOutputBuffer.height).map(e => {
+    return getRandomColor();
 });
+
+for (let y = 0; y < hDJMidiOutputBuffer.height; y++) {
+    for (let x = 0; x < hDJMidiOutputBuffer.width; x++) {
+        let i = x * hDJMidiOutputBuffer.height + y;
+
+        //write buffer onto transfer buffer
+        h.boundBuffer.setXY(data[i], {
+            x: x,
+            y: y
+        });
+    }
+}
+
+setTimeout(() => {
+    h.boundBuffer.flush();
+}, 5000);
 ```
 
 # TODO
