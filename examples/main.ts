@@ -1,5 +1,5 @@
 import { Receiver } from "../src/hDJMidiRecv";
-import { Receiver as Model} from "../src/hDJRecvModel";
+import { Model} from "../src/hDJRecvModel";
 import { SnakeMap, VecState } from 'snake-rs';
 // import { memory } from "snake-rs/snake_rs_bg.wasm";
 

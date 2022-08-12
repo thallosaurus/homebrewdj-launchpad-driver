@@ -1,14 +1,14 @@
 {
-  "name": "homebrewDJ",
+  "name": "launchpad.js",
   "version": "0.0.1",
-  "main": "dist/hDJMidiRecv.js",
+  "main": "dist/src/index.js",
   "license": "MIT",
   "private": true,
   "dependencies": {
-    "midi": "^2.0.0",
-    "typescript": "^4.7.4"
+    "midi": "^2.0.0"
   },
   "devDependencies": {
+    "typescript": "^4.7.4",
     "@types/jasmine": "^4.0.3",
     "@types/midi": "^2.0.0",
     "jasmine": "^4.3.0",

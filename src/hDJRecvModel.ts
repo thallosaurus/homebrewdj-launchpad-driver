@@ -1,5 +1,5 @@
 ///<reference path="hDJMidiRecv.ts" />
-export namespace Receiver {
+export namespace Model {
 
     /**
      * Represents a Port with its id and Name

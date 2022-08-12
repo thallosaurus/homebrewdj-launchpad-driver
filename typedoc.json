@@ -3,7 +3,7 @@
     "entryPoints": [
         "./src/hDJMidiRecv.ts",
         "./src/hDJRecvModel.ts",
-        "./src/hDJCmd.ts"
+        "./src/hDJMidiOutputBuffer.ts"
     ],
     "out": "docs"
 }

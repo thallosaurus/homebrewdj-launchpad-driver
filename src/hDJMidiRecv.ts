@@ -1,5 +1,5 @@
-import midi, { input } from 'midi';
-import * as a from './hDJRecvModel';
+import midi from 'midi';
+import { Model } from './hDJRecvModel';
 import {EventEmitter} from 'events';
 
 export namespace Receiver { 
@@ -38,8 +38,8 @@ export namespace Receiver {
                 console.log("[hDJMidiRecv]", deltaTime, message, djCmd);
                 
                 if (djCmd.matrix) {
-                    if (djCmd.type == a.Receiver.MessageType.NOTE_ON) {
-                        this.emit(a.Receiver.hDJRecvEvent.MatrixEvent, {
+                    if (djCmd.type == Model.MessageType.NOTE_ON) {
+                        this.emit(Model.hDJRecvEvent.MatrixEvent, {
                             ...djCmd.pos,
                             time: this.frameTime,
                             ...this,
@@ -48,12 +48,12 @@ export namespace Receiver {
                         })
                     }
                 } else {
-                    let isKeyDown = djCmd.type == a.Receiver.MessageType.NOTE_ON;
+                    let isKeyDown = djCmd.type == Model.MessageType.NOTE_ON;
 
                     this.emit(
                         isKeyDown
-                        ? a.Receiver.hDJRecvEvent.ButtonPress
-                        : a.Receiver.hDJRecvEvent.ButtonRelease, {
+                        ? Model.hDJRecvEvent.ButtonPress
+                        : Model.hDJRecvEvent.ButtonRelease, {
                         time: this.frameTime,
                         ...this,
                         ...djCmd,
@@ -74,9 +74,9 @@ export namespace Receiver {
          * @returns {PortEnumerationMap}
          * @memberof hDJMidiRecv
          */
-        enumeratePorts(): a.Receiver.PortEnumerationMap
+        enumeratePorts(): Model.PortEnumerationMap
         {
-            let inputs = [] as a.Receiver.PortEnumeration[];
+            let inputs = [] as Model.PortEnumeration[];
             for (let i = 0; i < this.midiSender.getPortCount(); i++) {
                 inputs.push({
                     port: i,
@@ -84,7 +84,7 @@ export namespace Receiver {
                 });
             }
 
-            let outputs = [] as a.Receiver.PortEnumeration[];
+            let outputs = [] as Model.PortEnumeration[];
             for (let i = 0; i < this.midiReturn.getPortCount(); i++) {
                 outputs.push({
                     port: i,
@@ -114,7 +114,7 @@ export namespace Receiver {
          * @memberof hDJMidiRecv
          * @todo
          */
-        private parseMidi(msg: number[]): a.Receiver.hDJRecvCmd {
+        private parseMidi(msg: number[]): Model.hDJRecvCmd {
             const typeRaw = msg[0];
             const port = msg[0] & 0b00001111;
             const note = msg[1];
@@ -122,11 +122,11 @@ export namespace Receiver {
 
             let type;
 
-            if (typeRaw == a.Receiver.MessageType.NOTE_ON) {
+            if (typeRaw == Model.MessageType.NOTE_ON) {
                 if (velo == 0) {
-                    type = a.Receiver.MessageType.NOTE_OFF;
+                    type = Model.MessageType.NOTE_OFF;
                 } else {
-                    type = a.Receiver.MessageType.NOTE_ON;
+                    type = Model.MessageType.NOTE_ON;
                 }
             } else {
                 type = typeRaw;
@@ -137,7 +137,7 @@ export namespace Receiver {
                 type: type,
                 velocity: velo,
                 matrix: isXY(note),
-                button: note as a.Receiver.ButtonId
+                button: note as Model.ButtonId
             }
         }
     }
@@ -147,7 +147,7 @@ export namespace Receiver {
      * @param note 
      * @returns 
      */
-    function getButtonCoordinates(note: number): a.Receiver.hDJRecvCoord | null {
+    function getButtonCoordinates(note: number): Model.hDJRecvCoord | null {
         let x = Math.floor(note / 16);
         let y = note % 16;
 
@@ -157,11 +157,11 @@ export namespace Receiver {
     /**
      * returns Index calculated from a position object
      *
-     * @param {a.Receiver.hDJRecvCoord} pos
+     * @param {Model.hDJRecvCoord} pos
      * @param {number} [width=16] if set, it will calculate based on this width
      * @return {*}  {number}
      */
-    function fromXY(pos: a.Receiver.hDJRecvCoord, width: number = 16): number
+    export function fromXY(pos: Model.hDJRecvCoord, width: number = 16): number
     {
         return pos.x * width + pos.y;
     }
@@ -195,8 +195,8 @@ export namespace Receiver {
          * empties the buffer
          */
         flush(): void {
-            this.buffer.fill(a.Receiver.Color.OFF);
-            this.buttonBuffer.fill(a.Receiver.Color.OFF);
+            this.buffer.fill(Model.Color.OFF);
+            this.buttonBuffer.fill(Model.Color.OFF);
             this.emit("data", this.mapAsMidiMessages());
         }
 
@@ -204,10 +204,10 @@ export namespace Receiver {
          * Set Data on the Buffer on their 2d position
          *
          * @param {number} data
-         * @param {a.Receiver.hDJRecvCoord} pos
+         * @param {Model.hDJRecvCoord} pos
          * @memberof hDJMidiOutputBuffer
          */
-        setXY(data: number, pos: a.Receiver.hDJRecvCoord): void {
+        setXY(data: number, pos: Model.hDJRecvCoord): void {
             let index = fromXY(pos, 8);
             //console.log(data, index);
             this.buffer.set([data], index);
@@ -215,8 +215,8 @@ export namespace Receiver {
             this.emit("data", this.mapAsMidiMessages());
         }
         
-        setButton(data: number, button: a.Receiver.ButtonId) {
-            let mappedIndex = a.Receiver.buttonIdToButtonBufferIndex(button)
+        setButton(data: number, button: Model.ButtonId) {
+            let mappedIndex = Model.buttonIdToButtonBufferIndex(button)
             //console.log(mappedIndex);
 
             this.buttonBuffer.set([data], mappedIndex);
@@ -250,7 +250,7 @@ export namespace Receiver {
          * @param from data
          * @param pos position of the upper left edge
          */
-        copy(from: ArrayLike<number>, pos: a.Receiver.hDJRecvCoord): void {
+        copy(from: ArrayLike<number>, pos: Model.hDJRecvCoord): void {
             let index = fromXY(pos, 8);
             this.buffer.set(from, index)
         }
@@ -267,22 +267,22 @@ export namespace Receiver {
 
                     const velocity = this.getXY(x, y);
 
-                    const d = [a.Receiver.MessageType.NOTE_ON, note, velocity];
+                    const d = [Model.MessageType.NOTE_ON, note, velocity];
 
                     b.push(d);
                 }
             }
 
             //add button states
-            let buttonIds = Object.values(a.Receiver.ButtonId);
+            let buttonIds = Object.values(Model.ButtonId);
             //console.log(buttonIds);
             for (let i = 0; i < this.buttonBuffer.length; i++) {
-                const note = buttonIds[i] as a.Receiver.ButtonId;  //button selector
+                const note = buttonIds[i] as Model.ButtonId;  //button selector
                 const velocity = this.buttonBuffer[i];  //color
 
-                let enumIndex = a.Receiver.ButtonId[note];
+                let enumIndex = Model.ButtonId[note];
 
-                const d = [a.Receiver.MessageType.NOTE_ON, enumIndex, velocity];
+                const d = [Model.MessageType.NOTE_ON, enumIndex, velocity];
 
                 b.push(d);
             }
