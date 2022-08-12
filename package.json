@@ -1,11 +1,23 @@
 {
   "name": "homebrewdj-launchpad-driver",
+  "author": "philipp Gaßner <activator112233@gmail.com> (https://cyberpsych0si.is/)",
+  "description": "A driver designed for use with homebrewDJ. For launchpad IO support",
+  "bugs": {
+    "url": "https://github.com/thallosaurus/homebrewdj-launchpad-driver/issues"
+  },
+  "keywords": [
+    "midi", "launchpad", "homebrewdj"
+  ],
   "version": "0.0.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "license": "MIT",
   "dependencies": {
     "midi": "^2.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/thallosaurus/homebrewdj-launchpad-driver"
   },
   "files": [
     "dist/hDJMidiOutputBuffer.d.ts",

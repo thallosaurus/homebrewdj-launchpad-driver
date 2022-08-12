@@ -3,7 +3,15 @@
 ## About
 This Module implements a Interface between a Launchpad Mini MK2 and Javascript Events with node-midi. See the example below on how to use this module
 
+## Installation
+### From NPM
+```npm i homebrewdj-launchpad-driver```
+
+### From Source
+```npm i https://github.com/thallosaurus/homebrewdj-launchpad-driver.git```
+
 ## Requirements
+Be sure that you have this installed beforehand the installationprocess will fail
 - OSX
   - Some version of Xcode (or Command Line Tools)
   - Python (for node-gyp)
