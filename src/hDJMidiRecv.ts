@@ -16,6 +16,13 @@ export namespace Receiver {
         private buffer: hDJMidiOutputBuffer = new hDJMidiOutputBuffer();
         private frameTime: number = 0;
 
+        /**
+         * exposes the buffer bound to the controller matrix.
+         * writes with the specified setter are reflected instantly
+         *
+         * @readonly
+         * @memberof hDJMidiRecv
+         */
         get boundBuffer() {
             return this.buffer;
         }
@@ -28,12 +35,10 @@ export namespace Receiver {
                 this.frameTime += deltaTime;
                 
                 //Log to console
-                //console.log("[hDJMidiRecv]", deltaTime, message, djCmd);
+                console.log("[hDJMidiRecv]", deltaTime, message, djCmd);
                 
                 if (djCmd.matrix) {
                     if (djCmd.type == a.Receiver.MessageType.NOTE_ON) {
-                        //console.log("[hDJMidiRecv]", fromXY(djCmd.pos!));
-                        //this.buffer.setXY(a.Receiver.getRandomNumber(), djCmd.pos!);
                         this.emit(a.Receiver.hDJRecvEvent.MatrixEvent, {
                             ...djCmd.pos,
                             time: this.frameTime,
@@ -42,7 +47,6 @@ export namespace Receiver {
 
                         })
                     }
-                    //echo(djCmd);
                 } else {
                     let isKeyDown = djCmd.type == a.Receiver.MessageType.NOTE_ON;
 
@@ -53,18 +57,7 @@ export namespace Receiver {
                         time: this.frameTime,
                         ...this,
                         ...djCmd,
-
                     });
-                    //switch (djCmd.button) {
-/*                        case a.Receiver.ButtonId.RECORDARM:
-                            //console.log("flush");
-                            //this.buffer.flush();
-
-                            break;
-                        default:
-                            console.log(djCmd.button + " was pressed");
-                            break;
-                    }*/
                 }
             });
 
@@ -288,10 +281,6 @@ export namespace Receiver {
                 const velocity = this.buttonBuffer[i];  //color
 
                 let enumIndex = a.Receiver.ButtonId[note];
-
-                //console.log(enumIndex);
-
-                //console.log(note, velocity);
 
                 const d = [a.Receiver.MessageType.NOTE_ON, enumIndex, velocity];
 

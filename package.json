@@ -1,7 +1,7 @@
 {
   "name": "homebrewDJ",
   "version": "0.0.1",
-  "main": "dist/main.js",
+  "main": "dist/hDJMidiRecv.js",
   "license": "MIT",
   "private": true,
   "dependencies": {
@@ -23,7 +23,7 @@
     "test": "jasmine-ts --config=jasmine.json",
     "watch": "nodemon ./examples/main.ts",
     "dev": "nodemon src/main.ts",
-    "generate:docs": "typedoc src/",
+    "generate:docs": "typedoc",
     "build": "wasm-pack build --target nodejs --dev ./snake-rs"
   }
 }

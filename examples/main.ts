@@ -1,26 +1,22 @@
 import { Receiver } from "../src/hDJMidiRecv";
 import { Receiver as Model} from "../src/hDJRecvModel";
 import { SnakeMap, VecState } from 'snake-rs';
-import { memory } from "snake-rs/snake_rs_bg.wasm";
+// import { memory } from "snake-rs/snake_rs_bg.wasm";
 
-// memory
-// import fs from 'fs';
-// console.log(WebAssembly.Memory);
+// let { memory } = require('snake-rs/snake_rs_bg.wasm');
 
 /* bootstraps everything here */
 
 let h = new Receiver.hDJMidiRecv();
 
-// console.log("available devices:");
-// console.log(h.enumeratePorts());
+console.log("available devices:");
+console.log(h.enumeratePorts());
 h.on(Model.hDJRecvEvent.MatrixEvent, (data) => {
-    //console.log("[main]", data);
-    console.log("[main, matrix_event]", "is matrix press");
+    console.log("[main, matrix_event]", data);
 });
 
 h.on(Model.hDJRecvEvent.ButtonPress, (data) => {
     console.log("[main, button_press]", data);
-    //console.log("[main]", "is button press", Model.ButtonId.RECORDARM == data.button);
 });
 
 let i = 0;
@@ -45,13 +41,15 @@ setInterval(() => {
 
     //WebAssembly.instantiate()
 
-    //let mapCopy = new Uint8Array(WebAssembly.Memory, snake.buffer_address(), 8 * 8);
+    // let mem = new WebAssembly.Memory();
 
 
     /*let map = new Uint8Array(memory.buffer, snake.buffer_address(), 8 * 8);
     let mapped = map.map((val: VecState) => {
         return val == VecState.ON ? Model.Color.GREEN3 : Model.Color.OFF
     });*/
+
+    // console.log(mapped);
 
     h.boundBuffer.flush();
     h.boundBuffer.set(i, [Model.Color.RED3]);

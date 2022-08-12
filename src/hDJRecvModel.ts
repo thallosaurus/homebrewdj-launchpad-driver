@@ -1,5 +1,12 @@
+///<reference path="hDJMidiRecv.ts" />
 export namespace Receiver {
 
+    /**
+     * Represents a Port with its id and Name
+     *
+     * @export
+     * @interface PortEnumeration
+     */
     export interface PortEnumeration {
         port: number,
         name: String
@@ -10,17 +17,35 @@ export namespace Receiver {
         output: PortEnumeration[]
     }
 
+    /**
+     * Represents a point in the matrix, 2D
+     *
+     * @export
+     * @interface hDJRecvCoord
+     */
     export interface hDJRecvCoord {
         x: number;
         y: number;
     }
 
+    /**
+     * MIDI Message Types
+     *
+     * @export
+     * @enum {number}
+     */
     export enum MessageType {
         NOTE_ON = 0x90,
         NOTE_OFF = 0x80,
         CC = 0xB0
     }
 
+    /**
+     * Represents a message sent by hDJMidiRecv
+     *
+     * @export
+     * @interface hDJRecvCmd
+     */
     export interface hDJRecvCmd {
         pos: hDJRecvCoord | null;
         type: MessageType;
@@ -41,6 +66,12 @@ export namespace Receiver {
         ButtonRelease = "button_release"
     }
 
+    /**
+     * Contains all IDs for the launchpad buttons
+     *
+     * @export
+     * @enum {number}
+     */
     export enum ButtonId {
         ARROW_UP = (104 | 0b11100000),
         ARROW_DOWN = (105 | 0b11100000),
@@ -60,15 +91,26 @@ export namespace Receiver {
         RECORDARM = 120
     }
 
+    /**
+     * Converts a ButtonId to its corresponding buttonBuffer index
+     *
+     * @export
+     * @param {ButtonId} n
+     * @returns
+     */
     export function buttonIdToButtonBufferIndex(n: ButtonId) {
         return Object.keys(ButtonId).indexOf(n.toString());
     }
 
+    /**
+     * Converts a buttonBuffer index back to its ButtoId enum value
+     * @param index 
+     * @returns 
+     */
     export function buttonBufferIndexToButtonId(index: number): ButtonId {
         switch (index) {
             case 0:
                 return ButtonId.VOLUME;
-
             case 1:
                 return ButtonId.PAN;
             case 2:
@@ -85,12 +127,17 @@ export namespace Receiver {
                 return ButtonId.SOLO;
             case 8:
                 return ButtonId.RECORDARM;
-
             default:
                 return ButtonId.ARROW_DOWN;
         };
     }
 
+    /**
+     * Launchpad Colors defined as velocity
+     *
+     * @export
+     * @enum {number}
+     */
     export enum Color {
         OFF = 0,
         RED1 = 1,
@@ -110,7 +157,7 @@ export namespace Receiver {
         GREEN3 = 48,
     }
 
-    export function getRandomNumber(): Color {
+    export function getRandomColor(): Color {
         const enumValues = Object.values(Color).filter(e => {
             return Number(e) && e != 0
         });
