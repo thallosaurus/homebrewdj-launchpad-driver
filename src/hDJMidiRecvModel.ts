@@ -160,6 +160,12 @@ export enum Color {
     GREEN3 = 48,
 }
 
+/**
+ * Returns a random value from the Color enum
+ *
+ * @export
+ * @returns {Color}
+ */
 export function getRandomColor(): Color {
     const enumValues = Object.values(Color).filter(e => {
         return Number(e) && e != 0
@@ -168,8 +174,4 @@ export function getRandomColor(): Color {
     const index = Math.floor(Math.random() * enumValues.length);
 
     return enumValues[index] as Color;
-}
-
-export interface hDJTile {
-    color: Color;
 }
