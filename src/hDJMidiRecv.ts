@@ -87,7 +87,7 @@ export class hDJMidiRecv extends EventEmitter {
                     })
                 }
             } else {
-                let isKeyDown = djCmd.type == MessageType.NOTE_ON;
+                let isKeyDown = djCmd.type == MessageType.NOTE_ON || (djCmd.type == MessageType.CC && djCmd.velocity > 0);
 
                 this.emit(
                     isKeyDown
