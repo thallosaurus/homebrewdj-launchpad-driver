@@ -1,15 +1,18 @@
 import { Receiver } from "../src/hDJMidiRecv";
 import { Receiver as Model} from "../src/hDJRecvModel";
 import { SnakeMap, VecState } from 'snake-rs';
-import fs from 'fs';
-console.log(WebAssembly.Memory);
+import { memory } from "snake-rs/snake_rs_bg.wasm";
+
+// memory
+// import fs from 'fs';
+// console.log(WebAssembly.Memory);
 
 /* bootstraps everything here */
 
 let h = new Receiver.hDJMidiRecv();
 
-console.log("available devices:");
-console.log(h.enumeratePorts());
+// console.log("available devices:");
+// console.log(h.enumeratePorts());
 h.on(Model.hDJRecvEvent.MatrixEvent, (data) => {
     //console.log("[main]", data);
     console.log("[main, matrix_event]", "is matrix press");
@@ -27,7 +30,7 @@ let y = 0;
 
 let j = 0;
 
-h.connect(0, 0);
+// h.connect(0, 0);
 
 let snake = SnakeMap.new(8, 8);
 

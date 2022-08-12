@@ -244,7 +244,7 @@ export namespace Receiver {
                 y: y
             }, 8);
 
-            return this.buffer.at(index)!;
+            return this.buffer[index];
         }
 
         set(i: number, data: number[]) {

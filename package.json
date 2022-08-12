@@ -15,8 +15,8 @@
     "jasmine-spec-reporter": "^7.0.0",
     "jasmine-ts": "^0.4.0",
     "nodemon": "^2.0.19",
-    "ts-node": "^10.9.1",
     "snake-rs": "./snake-rs/pkg",
+    "ts-node": "^10.9.1",
     "typedoc": "^0.23.10"
   },
   "scripts": {
