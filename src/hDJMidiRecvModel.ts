@@ -76,14 +76,14 @@ export enum hDJRecvEvent {
  * @enum {number}
  */
 export enum ButtonId {
-    ARROW_UP = (104 | 0b11100000),
-    ARROW_DOWN = (105 | 0b11100000),
-    ARROW_LEFT = (106 | 0b11100000),
-    ARROW_RIGHT = (107 | 0b11100000),
-    SESSION = (108 | 0b11100000),
-    USER1 = (109 | 0b11100000),
-    USER2 = (110 | 0b11100000),
-    MIXER = (111 | 0b11100000),
+    ARROW_UP = 112,
+    ARROW_DOWN = 105,
+    ARROW_LEFT = 106,
+    ARROW_RIGHT = 107,
+    SESSION = 108,
+    USER1 = 109,
+    USER2 = 110,
+    MIXER = 111,
     VOLUME = 8,
     PAN = 24,
     SENDA = 40,
