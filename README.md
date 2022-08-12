@@ -22,10 +22,9 @@ If you use Windows, you can also use ```npm install --global windows-build-tools
 
 ## Examples
 ```javascript
-import { Receiver } from "../src/hDJMidiRecv";
-import { hDJRecvEvent, Color } from "../src/hDJRecvModel";
+const { hDJMidiRecv, hDJRecvEvent, Colors } = require("homebrewdj-launchpad-driver");
 
-let h = new Receiver.hDJMidiRecv();
+let h = new hDJMidiRecv();
 
 //Get all connected MIDI Devices
 console.log("available devices:");
@@ -34,22 +33,22 @@ console.log(h.enumeratePorts());
 //For example, we use input 0 and output 0
 h.connect(0, 0);
 
-h.on(Model.hDJRecvEvent.MatrixEvent, (data) => {
+h.on(hDJRecvEvent.MatrixEvent, (data) => {
     console.log("Someone pressed the matrix at", data.pos);
 });
 
-h.on(hDJRecvEvent.ButtonPress, (data) => {
+h.on(ButtonPress, (data) => {
     console.log("Someone pressed the button", data.button);
 });
 
 //Writing some data to the launchpad
 let data = new Uint8Array(8 * 8);
-data.fill(Model.Colors.GREEN3);
+data.fill(Colors.GREEN3);
 
 h.boundBuffer.setXY(data, {
     x: 0,
     y: 0
-})
+});
 ```
 
 # TODO
