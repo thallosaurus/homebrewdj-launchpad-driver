@@ -12,8 +12,8 @@
     "dist/hDJMidiOutputBuffer.js",
     "dist/hDJMidiRecv.d.ts",
     "dist/hDJMidiRecv.js",
-    "dist/hDJRecvModel.d.ts",
-    "dist/hDJRecvModel.js",
+    "dist/hDJMidiRecvModel.d.ts",
+    "dist/hDJMidiRecvModel.js",
     "dist/index.d.ts",
     "dist/index.js"
   ],
