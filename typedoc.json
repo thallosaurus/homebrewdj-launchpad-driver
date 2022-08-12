@@ -1,9 +1,7 @@
 {
     "$schema": "https://typedoc.org/schema.json",
     "entryPoints": [
-        "./src/hDJMidiRecv.ts",
-        "./src/hDJRecvModel.ts",
-        "./src/hDJMidiOutputBuffer.ts"
+        "./src/index.ts"
     ],
     "out": "docs"
 }
