@@ -6,6 +6,7 @@ import {
     hDJRecvCmd,
     hDJRecvCoord,
     hDJRecvEvent,
+    isButton,
     MessageType,
     PortEnumeration,
     PortEnumerationMap
@@ -77,7 +78,7 @@ export class hDJMidiRecv extends EventEmitter {
             //Log to console
             //console.log("[hDJMidiRecv]", deltaTime, message, djCmd);
 
-            if (!djCmd.button) {
+            if (djCmd.matrix) {
                 if (djCmd.type == MessageType.NOTE_ON) {
                     this.emit(hDJRecvEvent.MatrixEvent, {
                         ...djCmd.pos,
@@ -157,21 +158,19 @@ export class hDJMidiRecv extends EventEmitter {
         const typeRaw = msg[0];
         const port = msg[0] & 0b00001111;
         const typeExtracted = msg[0] & 0b11110000;
-        console.log(typeExtracted);
 
         let note = msg[1];
         const velo = msg[2];        
 
-        console.log("Message on Port " + (port + 1));
+        //console.log("Message on Port " + (port + 1));
 
         if (typeExtracted == MessageType.CC && note == ButtonId.SOLO) {
-            console.log("Offending Button");
             note = ButtonId.ARROW_UP;
         }
 
         let type;
 
-        if (typeRaw != MessageType.CC) {
+        if (typeExtracted != MessageType.CC) {
             if (velo == 0) {
                 type = MessageType.NOTE_OFF;
             } else {
@@ -183,10 +182,11 @@ export class hDJMidiRecv extends EventEmitter {
         }
 
         return {
+            port: port,
             pos: getButtonCoordinates(note),
             type: type,
             velocity: velo,
-            matrix: isXY(note),
+            matrix: !isButton(note),
             button: note as ButtonId
         }
     }
@@ -201,7 +201,7 @@ function getButtonCoordinates(note: number): hDJRecvCoord | null {
     let x = Math.floor(note / 16);
     let y = note % 16;
 
-    return isXY(note) ? { x, y } : null;
+    return !isButton(note) ? { x, y } : null;
 }
 
 /**
@@ -223,5 +223,5 @@ export function fromXY(pos: hDJRecvCoord, width: number = 16): number {
  * @returns {boolean}
  */
 function isXY(note: number): boolean {
-    return (note % 16 < 8);
+    return (note % 16 < 8) && Object.keys(ButtonId).includes(note.toString());
 }

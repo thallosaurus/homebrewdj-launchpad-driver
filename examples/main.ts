@@ -1,6 +1,6 @@
 
 
-const { hDJMidiRecv, hDJRecvEvent, hDJMidiOutputBuffer, getRandomColor, ButtonId } = require("../src");
+const { hDJMidiRecv, hDJRecvEvent, hDJMidiOutputBuffer, getRandomColor, ButtonId, Color } = require("../src");
 
 let h = new hDJMidiRecv();
 
@@ -17,8 +17,7 @@ h.on(hDJRecvEvent.MatrixEvent, (data: any) => {
 
 h.on(hDJRecvEvent.ButtonPress, (data: any) => {
     console.log("Someone pressed the button", data.button);
-    //console.log(ButtonId);
-    console.log(ButtonId[data.button]);
+    //console.log(ButtonId[data.button]);
 });
 
 //Fill a new Array with some random colors
@@ -37,6 +36,8 @@ for (let y = 0; y < hDJMidiOutputBuffer.height; y++) {
         });
     }
 }
+
+//h.boundBuffer.setButton()
 
 setTimeout(() => {
     h.boundBuffer.flush();

@@ -85,8 +85,9 @@ export class hDJMidiOutputBuffer extends EventEmitter {
      * @param button 
      */
     setButton(data: number, button: ButtonId) {
-        let mappedIndex = buttonIdToButtonBufferIndex(button)
+        let mappedIndex = buttonIdToButtonBufferIndex(button);
         this.buttonBuffer.set([data], mappedIndex);
+        console.log(mappedIndex, this.buttonBuffer);
         this.emit("data", this.mapAsMidiMessages());
     }
 

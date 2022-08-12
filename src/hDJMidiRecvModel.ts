@@ -50,6 +50,7 @@ export enum MessageType {
  * @interface hDJRecvCmd
  */
 export interface hDJRecvCmd {
+    port: number;
     pos: hDJRecvCoord | null;
     type: MessageType;
     velocity: number | Color;
@@ -76,7 +77,7 @@ export enum hDJRecvEvent {
  * @enum {number}
  */
 export enum ButtonId {
-    ARROW_UP = 112,
+    ARROW_UP = 121,
     ARROW_DOWN = 105,
     ARROW_LEFT = 106,
     ARROW_RIGHT = 107,
@@ -105,6 +106,10 @@ export function buttonIdToButtonBufferIndex(n: ButtonId) {
     return Object.keys(ButtonId).indexOf(n.toString());
 }
 
+export function isButton(note: number): boolean {
+    return ButtonId[note] != undefined;
+}
+
 /**
  * Converts a buttonBuffer index back to its ButtoId enum value
  * @param index 
@@ -130,6 +135,22 @@ export function buttonBufferIndexToButtonId(index: number): ButtonId {
             return ButtonId.SOLO;
         case 8:
             return ButtonId.RECORDARM;
+        case 9:
+            return ButtonId.ARROW_UP;
+        case 10:
+            return ButtonId.ARROW_DOWN;
+        case 11:
+            return ButtonId.ARROW_LEFT;
+        case 12:
+            return ButtonId.ARROW_RIGHT;
+        case 13:
+            return ButtonId.SESSION;
+        case 14:
+            return ButtonId.USER1;
+        case 15:
+            return ButtonId.USER2;
+        case 16:
+            return ButtonId.MIXER;
         default:
             return ButtonId.ARROW_DOWN;
     };
@@ -170,7 +191,6 @@ export function getRandomColor(): Color {
     const enumValues = Object.values(Color).filter(e => {
         return Number(e) && e != 0
     });
-    console.log(enumValues);
     const index = Math.floor(Math.random() * enumValues.length);
 
     return enumValues[index] as Color;
