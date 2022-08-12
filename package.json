@@ -6,9 +6,11 @@
     "url": "https://github.com/thallosaurus/homebrewdj-launchpad-driver/issues"
   },
   "keywords": [
-    "midi", "launchpad", "homebrewdj"
+    "midi",
+    "launchpad",
+    "homebrewdj"
   ],
-  "version": "0.0.0",
+  "version": "0.0.1",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "license": "MIT",
