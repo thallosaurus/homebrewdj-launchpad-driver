@@ -226,6 +226,9 @@ h.on("button_press", (data) => {
         case ButtonId.ARROW_RIGHT:
             snake.right();
             break;
+        case ButtonId.RECORDARM:
+            snake.reset();
+            break;
     }
 });
 
