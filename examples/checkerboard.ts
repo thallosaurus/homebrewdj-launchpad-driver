@@ -34,8 +34,11 @@ const loop = () => {
                 x: x,
                 y: y
             });
+            console.log(x, y);
         }
     }
+
+    console.log("Loop");
 
 }
 

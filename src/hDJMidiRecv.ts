@@ -1,8 +1,6 @@
 import * as midi from 'midi';
 import {
     ButtonId,
-    buttonIdToButtonBufferIndex,
-    Color,
     hDJRecvCmd,
     hDJRecvCoord,
     hDJRecvEvent,
@@ -70,6 +68,9 @@ export class hDJMidiRecv extends EventEmitter {
 
     constructor() {
         super();
+        
+        //this.midiReturnStream = new hDJMidiStream(this.midiReturn);
+
         //define what happens on a midi message
         this.midiSender.on('message', (deltaTime: number, message: number[]) => {
             let djCmd = this.parseMidi(message);
@@ -102,12 +103,11 @@ export class hDJMidiRecv extends EventEmitter {
             }
         });
 
-        this.buffer.on("data", (data: any) => {
-            let unpacked = [];
-            
+        this.buffer.on("data", (data: midi.MidiMessage[]) => {
             for (let msg of data) {
                 this.midiReturn.send(msg);
             }
+                
         });
     }
 
@@ -215,15 +215,4 @@ function getButtonCoordinates(note: number): hDJRecvCoord | null {
  */
 export function fromXY(pos: hDJRecvCoord, width: number = 16): number {
     return pos.x * width + pos.y;
-}
-
-/**
- * Returns true, if the pressed button was inside the 8x8 matrix
- * false, if the press was outside
- *
- * @param {number} note
- * @returns {boolean}
- */
-function isXY(note: number): boolean {
-    return (note % 16 < 8) && Object.keys(ButtonId).includes(note.toString());
 }

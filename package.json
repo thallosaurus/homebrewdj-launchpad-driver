@@ -48,9 +48,9 @@
     "prepare": "npm run build",
     "push:version": "npm version patch",
     "test": "echo 'all checks passed (dummy)' && exit 0",
-    "dev": "nodemon src/main.ts",
     "generate:docs": "typedoc",
     "build": "tsc",
-    "example:snake": "ts-node ./examples/snake.ts"
+    "example:snake": "ts-node ./examples/snake.ts",
+    "example:checkerboard": "ts-node ./examples/checkerboard.ts"
   }
 }

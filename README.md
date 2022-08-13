@@ -75,6 +75,8 @@ setTimeout(() => {
 }, 5000);
 ```
 
-run 
+[See /examples for more example code](/examples/)
+
+run ```npm run example:checkerboard``` or  ```npm run example:snake``` for a demonstration
 # TODO
  - Get Lighting to work for the upper row buttons

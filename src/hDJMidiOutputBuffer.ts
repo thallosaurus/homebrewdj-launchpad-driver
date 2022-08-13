@@ -119,7 +119,7 @@ export class hDJMidiOutputBuffer extends EventEmitter {
         this.buffer.set(data, i);
         this.emit("data", this.mapAsMidiMessages());
     }
-
+    
     /**
      * copies values from another array into this buffer
      * @param from data
@@ -128,6 +128,7 @@ export class hDJMidiOutputBuffer extends EventEmitter {
     copy(from: ArrayLike<number>, pos: hDJRecvCoord): void {
         let index = fromXY(pos, 8);
         this.buffer.set(from, index)
+        this.emit("data", this.mapAsMidiMessages());
     }
 
     /**
