@@ -88,7 +88,7 @@ export class hDJMidiRecv extends EventEmitter {
             let djCmd = this.parseMidi(message);
 
             //Log to console
-            console.log("[hDJMidiRecv]", djCmd);
+            if (process.env.NODE_ENV == "dev") console.log("[hDJMidiRecv]", djCmd);
 
             if (djCmd.matrix) {
                 if (djCmd.type == MessageType.NOTE_ON) {
