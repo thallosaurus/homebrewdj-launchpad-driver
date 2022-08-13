@@ -82,6 +82,9 @@ export class hDJMidiRecv extends EventEmitter {
         //define what happens on a midi message
         this.midiSender.on('message', (deltaTime: number, message: number[]) => {
             this.frameTime += deltaTime;
+            if (message[0] == MessageType.CC) {
+                console.log("Upper Row");
+            }
             let djCmd = this.parseMidi(message);
 
             //Log to console
@@ -103,7 +106,7 @@ export class hDJMidiRecv extends EventEmitter {
 
         this.buffer.on("data", (data: midi.MidiMessage[]) => {
             for (let msg of data) {
-                this.midiReturn.send(msg);
+                this.midiReturn.sendMessage(msg);;
             }   
         });
 

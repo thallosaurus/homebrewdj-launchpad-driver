@@ -87,7 +87,29 @@ export class hDJMidiOutputBuffer extends EventEmitter {
      * @param button 
      */
     setButton(data: number, button: ButtonId) {
+        /*if (data == ButtonId.ARROW_UP) {
+            data = ButtonId.SOLO;
+        }*/
+        
+        let isCC = [
+            ButtonId.ARROW_UP,
+            ButtonId.ARROW_DOWN,
+            ButtonId.ARROW_LEFT,
+            ButtonId.ARROW_RIGHT,
+            ButtonId.SESSION,
+            //ButtonId.USER1,
+            ButtonId.USER2,
+            //ButtonId.MIXER,
+        ].includes(button);
+        
+        if (isCC) throw new Error("Lighting is not supported for upper row right now, sorry!");
+        
+        /*if (isCC && button == ButtonId.ARROW_UP) {
+            button = ButtonId.SOLO;
+        }*/
+
         let mappedIndex = buttonIdToButtonBufferIndex(button);
+        //fix
         //console.log(mappedIndex);
         this.buttonBuffer.set([data], mappedIndex);
         this.emit("data", this.mapAsMidiMessages());
@@ -140,7 +162,7 @@ export class hDJMidiOutputBuffer extends EventEmitter {
      * @returns {midi.MidiMessage[]}
      * @memberof hDJMidiOutputBuffer
      */
-    private mapAsMidiMessages(): midi.MidiMessage[] {
+    private mapAsMidiMessages(isCC = false): midi.MidiMessage[] {
         let b = new Array();
 
         for (let y = 0; y < hDJMidiOutputBuffer.height; y++) {
@@ -152,7 +174,7 @@ export class hDJMidiOutputBuffer extends EventEmitter {
 
                 const velocity = this.getXY(x, y);
 
-                const d = [MessageType.NOTE_ON, note, velocity];
+                const d = [isCC ? MessageType.CC : MessageType.NOTE_ON, note, velocity];
 
                 b.push(d);
             }

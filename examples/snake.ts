@@ -241,5 +241,8 @@ setInterval(() => {
     if (running) {
         snake.tick();
     }
-    h.boundBuffer.set(i, Array.from(snake.buffer));
+    h.boundBuffer.setXY(Array.from(snake.buffer), {
+        x: 0,
+        y: 0
+    });
 }, 250);
