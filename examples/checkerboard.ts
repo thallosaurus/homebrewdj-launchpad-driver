@@ -25,19 +25,6 @@ const loop = () => {
         return getRandomColor();
     });
     h.boundBuffer.flush();
-    /*for (let y = 0; y < hDJMidiOutputBuffer.height; y++) {
-        for (let x = 0; x < hDJMidiOutputBuffer.width; x++) {
-            let i = x * hDJMidiOutputBuffer.height + y;
-
-            //write buffer onto transfer buffer
-            h.boundBuffer.setXY(data[i], {
-                x: x,
-                y: y
-            });
-            console.log(x, y);
-        }
-    }*/
-
     h.boundBuffer.setXY(Array.from(data), {
         x: 0,
         y: 0

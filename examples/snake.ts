@@ -54,7 +54,7 @@ class MicroSnake {
                     buf.setXY([this.color], {
                         x: x,
                         y: y
-                    });
+                    }, 1);
                 }
             }
         }
@@ -247,5 +247,5 @@ setInterval(() => {
     h.boundBuffer.setXY(Array.from(snake.buffer), {
         x: 0,
         y: 0
-    });
+    }, 8);
 }, 250);

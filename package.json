@@ -51,6 +51,7 @@
     "generate:docs": "typedoc",
     "build": "tsc",
     "example:snake": "ts-node ./examples/snake.ts",
-    "example:checkerboard": "ts-node ./examples/checkerboard.ts"
+    "example:checkerboard": "ts-node ./examples/checkerboard.ts",
+    "example:demo": "ts-node ./examples/hdj-techdemo.ts"
   }
 }
