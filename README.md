@@ -5,7 +5,7 @@
 # To Play Snake, look here:
 Make sure you have a Launchpad Mini MK2. If you have a MK1, MK3, Pro or S and want to help write an issue
 
-1. download node.js
+1. download [node.js](https://nodejs.org/en/) and [python](https://www.python.org)
 2. download this repo (via command line or via the download button above)
 3. open the downloaded repo in a command line (cmd.exe (windows), terminal (mac) or bash(linux))
     -   if you are on windows, type ```npm i -g windows-build-tools```
