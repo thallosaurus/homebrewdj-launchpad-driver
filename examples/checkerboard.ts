@@ -9,7 +9,7 @@ console.log(h.enumeratePorts());
 //For example, we use input 0 and output 0
 h.connect(0, 0);
 
-h.on("matrix_event", (data) => {
+h.on("matrix_event_press", (data) => {
     console.log("Someone pressed the matrix at", data.pos);
 });
 

@@ -232,11 +232,18 @@ export function getRandomColor(): Color {
 export interface hDJMidiEvents {
 
     /**
-     * Event declaration for matrix event
+     * Event declaration for matrix press event
      *
      * @memberof hDJMidiEvents
      */
-    'matrix_event': (data: hDJRecvCmd) => void;
+    'matrix_event_press': (data: hDJRecvCmd) => void;
+
+    /**
+     * Event declaration for matrix release event
+     *
+     * @memberof hDJMidiEvents
+     */
+    'matrix_event_release': (data: hDJRecvCmd) => void;
 
     /**
      * Event declaration for button presses

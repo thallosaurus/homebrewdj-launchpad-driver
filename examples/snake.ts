@@ -205,7 +205,7 @@ let running = true;
 
 console.log("available devices:");
 console.log(h.enumeratePorts());
-h.on("matrix_event", (data) => {
+h.on("matrix_event_press", (data) => {
     console.log("[main, matrix_event]", snake.snackPos);
     if (data.pos!.x == snake.snackPos.x && data.pos!.y == snake.snackPos.y) {
         running = !running;

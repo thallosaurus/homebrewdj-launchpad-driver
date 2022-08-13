@@ -92,7 +92,9 @@ export class hDJMidiRecv extends EventEmitter {
 
             if (djCmd.matrix) {
                 if (djCmd.type == MessageType.NOTE_ON) {
-                    this.emit("matrix_event", djCmd);
+                    this.emit("matrix_event_press", djCmd);
+                } else {
+                    this.emit("matrix_event_release", djCmd);
                 }
             } else {
                 let isKeyDown = djCmd.type == MessageType.NOTE_ON || (djCmd.type == MessageType.CC && djCmd.velocity > 0);
