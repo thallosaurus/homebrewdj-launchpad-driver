@@ -2,9 +2,18 @@
 
 [![Node.js Package](https://github.com/thallosaurus/homebrewdj-launchpad-driver/actions/workflows/npm-publish.yml/badge.svg)](https://github.com/thallosaurus/homebrewdj-launchpad-driver/actions/workflows/npm-publish.yml)
 
+# To Play Snake, look here:
+Make sure you have a Launchpad Mini MK2. If you have a MK1, MK3, Pro or S and want to help write an issue
+
+1. download node.js
+2. download this repo (via command line or via the download button above)
+3. open the downloaded repo in a command line (cmd.exe (windows), terminal (mac) or bash(linux))
+    -   if you are on windows, type ```npm i -g windows-build-tools```
+4. ```npm install```
+5. ```npx ts-node examples/snake.ts```
+
 ## About
 This Module implements a Interface between a Launchpad Mini MK2 and Javascript Events with node-midi. See the example below on how to use this module
-
 
 ## Installation
 ### From NPM
