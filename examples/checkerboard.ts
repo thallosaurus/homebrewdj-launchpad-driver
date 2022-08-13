@@ -9,11 +9,11 @@ console.log(h.enumeratePorts());
 //For example, we use input 0 and output 0
 h.connect(0, 0);
 
-h.on(hDJRecvEvent.MatrixEvent, (data: any) => {
+h.on("matrix_event", (data) => {
     console.log("Someone pressed the matrix at", data.pos);
 });
 
-h.on(hDJRecvEvent.ButtonPress, (data: any) => {
+h.on("button_press", (data: any) => {
     console.log("Someone pressed the button", data.button);
     console.log(ButtonId[data.button]);
 });

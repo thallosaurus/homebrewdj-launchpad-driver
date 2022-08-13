@@ -3,8 +3,12 @@ import * as midi from 'midi';
 import EventEmitter from "events";
 import { fromXY } from './hDJMidiRecv';
 
+export declare interface hDJMidiOutputBuffer {
+    on(event: 'data', listener: (data: midi.MidiMessage[]) => void): this;
+}
+
 /**
- * Contains Methods for interacting with the launchpad LED Output
+ * Contains Methods and Events for interacting with the launchpad LED Output
  *
  * @export
  * @class hDJMidiOutputBuffer
@@ -71,11 +75,9 @@ export class hDJMidiOutputBuffer extends EventEmitter {
      * @param {hDJRecvCoord} pos
      * @memberof hDJMidiOutputBuffer
      */
-    setXY(data: number, pos: hDJRecvCoord): void {
+    setXY(data: number[], pos: hDJRecvCoord): void {
         let index = fromXY(pos, 8);
-        //console.log(data, index);
-        this.buffer.set([data], index);
-        //console.log("[hDJMidiOutputBuffer]", this.buffer);
+        this.buffer.set(data, index);
         this.emit("data", this.mapAsMidiMessages());
     }
 

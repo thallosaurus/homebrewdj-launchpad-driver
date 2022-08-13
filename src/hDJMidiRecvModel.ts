@@ -50,24 +50,13 @@ export enum MessageType {
  * @interface hDJRecvCmd
  */
 export interface hDJRecvCmd {
+    time: number;
     port: number;
     pos: hDJRecvCoord | null;
     type: MessageType;
     velocity: number | Color;
     matrix: boolean;
     button: ButtonId | null;
-}
-
-/**
- * represents a hardware action
- *
- * @export
- * @enum {number}
- */
-export enum hDJRecvEvent {
-    MatrixEvent = "matrix_event",
-    ButtonPress = "button_press",
-    ButtonRelease = "button_release"
 }
 
 /**
@@ -232,4 +221,34 @@ export function getRandomColor(): Color {
     const index = Math.floor(Math.random() * enumValues.length);
 
     return enumValues[index] as Color;
+}
+
+/**
+ * Events sent from hDJMidiRecvModel
+ *
+ * @export
+ * @interface hDJMidiEvents
+ */
+export interface hDJMidiEvents {
+
+    /**
+     * Event declaration for matrix event
+     *
+     * @memberof hDJMidiEvents
+     */
+    'matrix_event': (data: hDJRecvCmd) => void;
+
+    /**
+     * Event declaration for button presses
+     *
+     * @memberof hDJMidiEvents
+     */
+    'button_press': (data: hDJRecvCmd) => void;
+
+    /**
+     * Event declaration for button releases
+     *
+     * @memberof hDJMidiEvents
+     */
+    'button_release': (data: hDJRecvCmd) => void,
 }

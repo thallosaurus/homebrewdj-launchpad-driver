@@ -3,14 +3,24 @@ import {
     ButtonId,
     hDJRecvCmd,
     hDJRecvCoord,
-    hDJRecvEvent,
     isButton,
     MessageType,
+    hDJMidiEvents,
     PortEnumeration,
     PortEnumerationMap
 } from './hDJMidiRecvModel';
 import { EventEmitter } from 'events';
 import { hDJMidiOutputBuffer } from './hDJMidiOutputBuffer';
+
+export declare interface hDJMidiRecv  {
+    on<U extends keyof hDJMidiEvents>(
+        event: U, listener: hDJMidiEvents[U]
+      ): this;
+    
+    emit<U extends keyof hDJMidiEvents>(
+        event: U, ...args: Parameters<hDJMidiEvents[U]>
+    ): boolean;
+}
 
 /**
  * Responsible for communication between the hardware. Decodes Messages and translates them to hDJMidiRecv events
@@ -68,46 +78,40 @@ export class hDJMidiRecv extends EventEmitter {
 
     constructor() {
         super();
-        
-        //this.midiReturnStream = new hDJMidiStream(this.midiReturn);
 
         //define what happens on a midi message
         this.midiSender.on('message', (deltaTime: number, message: number[]) => {
-            let djCmd = this.parseMidi(message);
             this.frameTime += deltaTime;
+            let djCmd = this.parseMidi(message);
 
             //Log to console
-            //console.log("[hDJMidiRecv]", deltaTime, message, djCmd);
+            console.log("[hDJMidiRecv]", djCmd);
 
             if (djCmd.matrix) {
                 if (djCmd.type == MessageType.NOTE_ON) {
-                    this.emit(hDJRecvEvent.MatrixEvent, {
-                        ...djCmd.pos,
-                        time: this.frameTime,
-                        ...this,
-                        ...djCmd,
-                    });
+                    this.emit("matrix_event", djCmd);
                 }
             } else {
-                //test
                 let isKeyDown = djCmd.type == MessageType.NOTE_ON || (djCmd.type == MessageType.CC && djCmd.velocity > 0);
-
-                this.emit(
-                    isKeyDown
-                        ? hDJRecvEvent.ButtonPress
-                        : hDJRecvEvent.ButtonRelease, {
-                    time: this.frameTime,
-                    ...this,
-                    ...djCmd,
-                });
+                if (isKeyDown) {
+                    this.emit("button_press", djCmd);
+                } else {
+                    this.emit("button_release", djCmd);
+                }
             }
         });
 
         this.buffer.on("data", (data: midi.MidiMessage[]) => {
             for (let msg of data) {
                 this.midiReturn.send(msg);
-            }
-                
+            }   
+        });
+
+        process.on('SIGINT', () => {
+            console.log("Caught interrupt signal");
+            this.boundBuffer.flush();
+        
+            process.exit(0);
         });
     }
 
@@ -158,14 +162,13 @@ export class hDJMidiRecv extends EventEmitter {
      */
     private parseMidi(msg: number[]): hDJRecvCmd {
         const typeRaw = msg[0];
-        const port = msg[0] & 0b00001111;
-        const typeExtracted = msg[0] & 0b11110000;
+        const port = typeRaw & 0b00001111;
+        const typeExtracted = typeRaw & 0b11110000;
 
         let note = msg[1];
         const velo = msg[2];        
 
-        //console.log("Message on Port " + (port + 1));
-
+        //correction
         if (typeExtracted == MessageType.CC && note == ButtonId.SOLO) {
             note = ButtonId.ARROW_UP;
         }
@@ -189,7 +192,8 @@ export class hDJMidiRecv extends EventEmitter {
             type: type,
             velocity: velo,
             matrix: !isButton(note),
-            button: note as ButtonId
+            button: note as ButtonId,
+            time: this.frameTime
         }
     }
 }

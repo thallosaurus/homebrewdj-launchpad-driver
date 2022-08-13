@@ -1,4 +1,4 @@
-import { Color, buttonBufferIndexToButtonId, hDJRecvEvent, hDJMidiRecv, hDJMidiOutputBuffer, ButtonId, getRandomColor } from '../src';
+import { Color, hDJMidiRecv, hDJMidiOutputBuffer, ButtonId, getRandomColor, hDJRecvCoord } from '../src';
 
 enum MSDirection {
     UP,
@@ -24,8 +24,11 @@ class MicroSnake {
     private color: Color;
     private points: number;
 
-    get speed(): number {
-        return this.points * 25;
+    get snackPos(): hDJRecvCoord {
+        return {
+            x: this.snackX,
+            y: this.snackY,
+        };
     }
 
     get buffer(): Uint8Array {
@@ -48,7 +51,7 @@ class MicroSnake {
                 //console.log(x, y, shouldDrawX, shouldDrawY);
 
                 if (shouldDrawX && shouldDrawY) {
-                    buf.setXY(this.color, {
+                    buf.setXY([this.color], {
                         x: x,
                         y: y
                     });
@@ -198,15 +201,18 @@ class MicroSnake {
 let h = new hDJMidiRecv();
 let snake = new MicroSnake(8, 8);
 
+let running = true;
+
 console.log("available devices:");
 console.log(h.enumeratePorts());
-h.on(hDJRecvEvent.MatrixEvent, (data) => {
-    console.log("[main, matrix_event]", data.pos);
+h.on("matrix_event", (data) => {
+    console.log("[main, matrix_event]", snake.snackPos);
+    if (data.pos!.x == snake.snackPos.x && data.pos!.y == snake.snackPos.y) {
+        running = !running;
+    }
 });
 
-h.on(hDJRecvEvent.ButtonPress, (data) => {
-    console.log("[main, button_press]", data.button);
-
+h.on("button_press", (data) => {
     switch (data.button) {
         case ButtonId.ARROW_UP:
             snake.up();
@@ -231,14 +237,9 @@ h.connect(0, 0);
 // let snake = SnakeMap.new(8, 8);
 
 setInterval(() => {
-    snake.tick();
     h.boundBuffer.flush();
+    if (running) {
+        snake.tick();
+    }
     h.boundBuffer.set(i, Array.from(snake.buffer));
 }, 250);
-
-process.on('SIGINT', function () {
-    console.log("Caught interrupt signal");
-    h.boundBuffer.flush();
-
-    process.exit(0);
-});
