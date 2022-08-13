@@ -75,8 +75,8 @@ export class hDJMidiOutputBuffer extends EventEmitter {
      * @param {hDJRecvCoord} pos
      * @memberof hDJMidiOutputBuffer
      */
-    setXY(data: number[], pos: hDJRecvCoord): void {
-        let index = fromXY(pos, 8);
+    setXY(data: number[], pos: hDJRecvCoord, width = 8): void {
+        let index = fromXY(pos, width);
         this.buffer.set(data, index);
         this.emit("data", this.mapAsMidiMessages());
     }
