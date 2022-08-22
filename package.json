@@ -50,6 +50,7 @@
     "generate:docs": "typedoc",
     "build": "tsc",
     "example:snake": "NODE_ENV=dev ts-node ./examples/snake.ts",
-    "example:checkerboard": "NODE_ENV=dev ts-node ./examples/checkerboard.ts"
+    "example:checkerboard": "NODE_ENV=dev ts-node ./examples/checkerboard.ts",
+    "example:echo": "NODE_ENV=dev nodemon ./examples/echo.ts"
   }
 }

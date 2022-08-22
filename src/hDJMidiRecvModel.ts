@@ -1,3 +1,5 @@
+import * as midi from 'midi';
+
 /**
  * Represents a Port with its id and Name
  *
@@ -221,6 +223,25 @@ export function getRandomColor(): Color {
     const index = Math.floor(Math.random() * enumValues.length);
 
     return enumValues[index] as Color;
+}
+
+export function hardcodedCorrectionButtonMap(message: number[]): number[] {
+
+    let oldValue = message[1];
+
+    switch (oldValue) {
+        case ButtonId.ARROW_UP:
+            return [176, 104, message[2]];
+
+        case ButtonId.SOLO:
+            return [144, 104, message[2]];
+
+        case ButtonId.RECORDARM:
+            return [144, 120, message[2]];
+
+        default:
+            return message;
+    }
 }
 
 /**

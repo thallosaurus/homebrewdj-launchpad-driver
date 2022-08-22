@@ -1,4 +1,4 @@
-import { ButtonId, buttonIdToButtonBufferIndex, Color, hDJRecvCoord, MessageType } from "./hDJMidiRecvModel";
+import { ButtonId, buttonIdToButtonBufferIndex, Color, hardcodedCorrectionButtonMap, hDJRecvCoord, MessageType } from "./hDJMidiRecvModel";
 import * as midi from 'midi';
 import EventEmitter from "events";
 import { fromXY } from './hDJMidiRecv';
@@ -50,10 +50,13 @@ export class hDJMidiOutputBuffer extends EventEmitter {
      */
     private readonly buttonBuffer: Uint8Array;
 
+    private readonly buttonMap: Map<ButtonId, Color>;
+
     constructor() {
         super();
         this.buffer = new Uint8Array(hDJMidiOutputBuffer.width * hDJMidiOutputBuffer.height);
         this.buttonBuffer = new Uint8Array(16);
+        this.buttonMap = new Map<ButtonId, Color>();
         this.flush();
     }
 
@@ -65,6 +68,7 @@ export class hDJMidiOutputBuffer extends EventEmitter {
     flush(): void {
         this.buffer.fill(Color.OFF);
         this.buttonBuffer.fill(Color.OFF);
+        this.buttonMap.clear();
         this.emit("data", this.mapAsMidiMessages());
     }
 
@@ -91,37 +95,8 @@ export class hDJMidiOutputBuffer extends EventEmitter {
         this.emit("data", this.mapAsMidiMessages());
     }
 
-    /**
-     * Sets data of Button LED on buffer
-     * @param data 
-     * @param button 
-     */
-    setButton(data: number, button: ButtonId) {
-        /*if (data == ButtonId.ARROW_UP) {
-            data = ButtonId.SOLO;
-        }*/
-        
-        let isCC = [
-            ButtonId.ARROW_UP,
-            ButtonId.ARROW_DOWN,
-            ButtonId.ARROW_LEFT,
-            ButtonId.ARROW_RIGHT,
-            ButtonId.SESSION,
-            //ButtonId.USER1,
-            ButtonId.USER2,
-            //ButtonId.MIXER,
-        ].includes(button);
-        
-        if (isCC) throw new Error("Lighting is not supported for upper row right now, sorry!");
-        
-        /*if (isCC && button == ButtonId.ARROW_UP) {
-            button = ButtonId.SOLO;
-        }*/
-
-        let mappedIndex = buttonIdToButtonBufferIndex(button);
-        //fix
-        //console.log(mappedIndex);
-        this.buttonBuffer.set([data], mappedIndex);
+    setButton(data: Color, button: ButtonId) {
+        this.buttonMap.set(button, data);
         this.emit("data", this.mapAsMidiMessages());
     }
 
@@ -172,7 +147,7 @@ export class hDJMidiOutputBuffer extends EventEmitter {
      * @returns {midi.MidiMessage[]}
      * @memberof hDJMidiOutputBuffer
      */
-    private mapAsMidiMessages(isCC = false): midi.MidiMessage[] {
+    private mapAsMidiMessages(): midi.MidiMessage[] {
         let b = new Array();
 
         for (let y = 0; y < hDJMidiOutputBuffer.height; y++) {
@@ -184,23 +159,18 @@ export class hDJMidiOutputBuffer extends EventEmitter {
 
                 const velocity = this.getXY(x, y);
 
-                const d = [isCC ? MessageType.CC : MessageType.NOTE_ON, note, velocity];
-
+                const d = [MessageType.NOTE_ON, note, velocity];
+                
                 b.push(d);
             }
         }
-
+        
         //add button states
-        let buttonIds = Object.values(ButtonId);
-        for (let i = 0; i < this.buttonBuffer.length; i++) {
-            const note = buttonIds[i] as ButtonId;  //button selector
-            const velocity = this.buttonBuffer[i];  //color
+        for (let obj of this.buttonMap) {
+            let [id, color] = obj;
+            let g = [((id < 100) ? MessageType.NOTE_ON : MessageType.CC), id, color];
 
-            let enumIndex = ButtonId[note];
-
-            const d = [MessageType.NOTE_ON, enumIndex, velocity];
-
-            b.push(d);
+            b.push(hardcodedCorrectionButtonMap(g));
         }
 
         return b;
