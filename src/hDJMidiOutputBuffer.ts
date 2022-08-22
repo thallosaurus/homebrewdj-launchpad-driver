@@ -70,8 +70,6 @@ export class hDJMidiOutputBuffer extends EventEmitter {
             this.buttonMap.set(id, Color.OFF);
         }
 
-        console.log("flush", this.buttonMap);
-
         this.emit("data", this.mapAsMidiMessages());
     }
 

@@ -1,4 +1,4 @@
-# homebrewdj-launchpad-driver - Launchpad Mini (MK2) Driver for Node from homebrewDJ (TBA)
+# homebrewdj-launchpad-driver - Launchpad Mini (MK2) Driver for Node from homebrewDJ
 
 [![Node.js Package](https://github.com/thallosaurus/homebrewdj-launchpad-driver/actions/workflows/npm-publish.yml/badge.svg)](https://github.com/thallosaurus/homebrewdj-launchpad-driver/actions/workflows/npm-publish.yml)
 

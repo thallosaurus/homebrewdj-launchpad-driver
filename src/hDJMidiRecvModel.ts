@@ -225,6 +225,13 @@ export function getRandomColor(): Color {
     return enumValues[index] as Color;
 }
 
+/**
+ * Hardcodedly returns the correct messages for round buttons. I am sorry
+ *
+ * @export
+ * @param {number[]} message
+ * @return {*}  {number[]}
+ */
 export function hardcodedCorrectionButtonMap(message: number[]): number[] {
 
     let oldValue = message[1];

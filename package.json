@@ -49,8 +49,8 @@
     "test": "echo 'all checks passed (dummy)' && exit 0",
     "generate:docs": "typedoc",
     "build": "tsc",
-    "example:snake": "NODE_ENV=dev ts-node ./examples/snake.ts",
-    "example:checkerboard": "NODE_ENV=dev ts-node ./examples/checkerboard.ts",
+    "example:snake": "NODE_ENV=dev ts-node ./examples/snakeStub.ts",
+    "example:checkerboard": "NODE_ENV=dev nodemon ./examples/checkerboard.ts",
     "example:echo": "NODE_ENV=dev nodemon ./examples/echo.ts"
   }
 }

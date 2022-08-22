@@ -1,13 +1,14 @@
-import { hDJMidiRecv, hDJMidiOutputBuffer, getRandomColor, ButtonId, Color } from "../src";
+import { hDJMidiRecv, hDJMidiOutputBuffer, getRandomColor, ButtonId, Color, getButtonIdsAsArray } from "../src";
 
 let h = new hDJMidiRecv();
+console.log("AAaAaaAAAAAAAAAAAAAAAA");
 
 //Get all connected MIDI Devices
 console.log("available devices:");
 console.log(h.enumeratePorts());
 
 //For example, we use input 0 and output 0
-h.connect(0, 0);
+h.connect(1, 1);
 
 h.on("matrix_event_press", (data) => {
     console.log("Someone pressed the matrix at", data.pos);
@@ -24,30 +25,16 @@ const loop = () => {
     let data = new Uint8Array(hDJMidiOutputBuffer.width * hDJMidiOutputBuffer.height).map(e => {
         return getRandomColor();
     });
-    h.boundBuffer.flush();
+    //h.boundBuffer.flush();
     h.boundBuffer.setXY(Array.from(data), {
         x: 0,
         y: 0
     });
 
-    h.boundBuffer.setButton(Color.GREEN3, ButtonId.VOLUME);
-    h.boundBuffer.setButton(Color.GREEN3, ButtonId.PAN);
-    h.boundBuffer.setButton(Color.GREEN3, ButtonId.SENDA);
-    h.boundBuffer.setButton(Color.GREEN3, ButtonId.SENDB);
-    h.boundBuffer.setButton(Color.GREEN3, ButtonId.STOP);
-    h.boundBuffer.setButton(Color.GREEN3, ButtonId.MUTE);
-//    h.boundBuffer.setButton(Color.GREEN3, ButtonId.SOLO);   //Dont Work
-//    h.boundBuffer.setButton(Color.GREEN3, ButtonId.RECORDARM);  //Dont Work
-    //h.boundBuffer.setButton(Color.GREEN3, ButtonId.ARROW_UP);  //Dont Work
-//    h.boundBuffer.setButton(Color.GREEN3, ButtonId.ARROW_DOWN);  //Dont Work
-//    h.boundBuffer.setButton(Color.GREEN3, ButtonId.ARROW_LEFT);  //Dont Work
-//    h.boundBuffer.setButton(Color.GREEN3, ButtonId.ARROW_RIGHT);  //Dont Work
-//    h.boundBuffer.setButton(Color.GREEN3, ButtonId.SESSION);  //Dont Work
-    h.boundBuffer.setButton(Color.GREEN3, ButtonId.USER1);  //Turns Solo on?
-//    h.boundBuffer.setButton(Color.GREEN3, ButtonId.USER2);  //Dont Work
-    h.boundBuffer.setButton(Color.GREEN3, ButtonId.MIXER);  //Turns Record Arm on?
-
+    for (let id of getButtonIdsAsArray()) {
+        h.boundBuffer.setButton(getRandomColor(), id);
+    }
 }
 
-setInterval(loop, 1000);
+setInterval(loop, 250);
 loop();
