@@ -12,7 +12,6 @@ console.log("available devices:");
 console.log(h.enumeratePorts());
 
 h.connect(1, 1);
-h.boundBuffer.flush();
 
 h.boundBuffer.setButton(127, ButtonId.ARROW_UP);  //zeigt nichts
 // => [176, 104, 127] / Momentan => [176, 121, 127]
@@ -36,4 +35,5 @@ h.boundBuffer.setButton(127, ButtonId.RECORDARM);   //=> ARROW_UP?
 
 h.on("button_press", (data) => {
     console.log(data);
+    h.boundBuffer.flush();
 });

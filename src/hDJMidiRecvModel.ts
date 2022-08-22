@@ -244,6 +244,33 @@ export function hardcodedCorrectionButtonMap(message: number[]): number[] {
     }
 }
 
+export function getSpecialButtonIdsAsArray() {
+    return [
+        ButtonId.ARROW_UP,
+        ButtonId.ARROW_DOWN,
+        ButtonId.ARROW_LEFT,
+        ButtonId.ARROW_RIGHT,
+        ButtonId.SESSION,
+        ButtonId.USER1,
+        ButtonId.USER2,
+        ButtonId.MIXER,
+    ];
+}
+
+export function getButtonIdsAsArray() {
+    return [
+        ...getSpecialButtonIdsAsArray(),
+        ButtonId.VOLUME,
+        ButtonId.PAN,
+        ButtonId.SENDA,
+        ButtonId.SENDB,
+        ButtonId.STOP,
+        ButtonId.MUTE,
+        ButtonId.SOLO,
+        ButtonId.RECORDARM
+    ];
+}
+
 /**
  * Events sent from hDJMidiRecvModel
  *

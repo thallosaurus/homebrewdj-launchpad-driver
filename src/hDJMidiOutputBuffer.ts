@@ -1,4 +1,4 @@
-import { ButtonId, buttonIdToButtonBufferIndex, Color, hardcodedCorrectionButtonMap, hDJRecvCoord, MessageType } from "./hDJMidiRecvModel";
+import { ButtonId, buttonIdToButtonBufferIndex, Color, getButtonIdsAsArray, hardcodedCorrectionButtonMap, hDJRecvCoord, MessageType } from "./hDJMidiRecvModel";
 import * as midi from 'midi';
 import EventEmitter from "events";
 import { fromXY } from './hDJMidiRecv';
@@ -48,14 +48,12 @@ export class hDJMidiOutputBuffer extends EventEmitter {
      * @type {Uint8Array}
      * @memberof hDJMidiOutputBuffer
      */
-    private readonly buttonBuffer: Uint8Array;
-
     private readonly buttonMap: Map<ButtonId, Color>;
 
     constructor() {
         super();
         this.buffer = new Uint8Array(hDJMidiOutputBuffer.width * hDJMidiOutputBuffer.height);
-        this.buttonBuffer = new Uint8Array(16);
+        //this.buttonBuffer = new Uint8Array(16);
         this.buttonMap = new Map<ButtonId, Color>();
         this.flush();
     }
@@ -67,8 +65,13 @@ export class hDJMidiOutputBuffer extends EventEmitter {
      */
     flush(): void {
         this.buffer.fill(Color.OFF);
-        this.buttonBuffer.fill(Color.OFF);
-        this.buttonMap.clear();
+
+        for (let id of getButtonIdsAsArray()) {
+            this.buttonMap.set(id, Color.OFF);
+        }
+
+        console.log("flush", this.buttonMap);
+
         this.emit("data", this.mapAsMidiMessages());
     }
 
@@ -164,14 +167,18 @@ export class hDJMidiOutputBuffer extends EventEmitter {
                 b.push(d);
             }
         }
+
+        for (let id of getButtonIdsAsArray()) {
+            let color = this.buttonMap.get(id)!;
+            let type = ((id < 100) ? (
+                color == Color.OFF ? MessageType.NOTE_OFF : MessageType.NOTE_ON
+            ) : MessageType.CC);
+
+            let msg = [type, id, color];
+            b.push(hardcodedCorrectionButtonMap(msg));
+        }
         
         //add button states
-        for (let obj of this.buttonMap) {
-            let [id, color] = obj;
-            let g = [((id < 100) ? MessageType.NOTE_ON : MessageType.CC), id, color];
-
-            b.push(hardcodedCorrectionButtonMap(g));
-        }
 
         return b;
     }
